@@ -1,8 +1,39 @@
 <template>
-    <div>
-        <router-view></router-view>
+    <div @click="resetTimeOut">
+        <transition name="drop">
+            <screensaver v-if="showScreensaver"></screensaver>
+        </transition>
+        <router-view v-if="!showScreensaver"></router-view>
     </div>
 </template>
+
+<script>
+import Screensaver from "./components/Screensaver.vue";
+
+export default {
+    data: () => ({
+        screensaverTimeout: null,
+        showScreensaver: true,
+        showScreensaverAfter: 3000
+    }),
+
+    components: {
+        Screensaver
+    },
+
+    methods: {
+        resetTimeOut() {
+            this.showScreensaver = false;
+
+            if (this.screensaverTimeout !== null) {
+                clearTimeout(this.screensaverTimeout);
+            }
+
+            this.screensaverTimeout = setTimeout(() => this.showScreensaver = true, 4000);
+        },
+    }
+}
+</script>
 
 <style lang="less">
 *, *:before, *:after {
