@@ -1,5 +1,5 @@
 <template>
-    <screensaver :timeout="2000">
+    <screensaver class="screensaver" :timeout="2000">
         <template slot="screensaver">
             <clock class="clock"></clock>
         </template>
@@ -30,17 +30,28 @@ export default {
 }
 
 html {
-    font-size: unit(35 / 16 * 100, %);
+    font-size: unit(35 / 16 * 100, e("%"));
 }
 
 body {
-    .text--normal();
     background: @tone-black linear-gradient(100deg, transparent 61.8%, @color-purple-secondary 61.8%) no-repeat top left;
-    color: @text-color;
-    font-family: 'PT Sans', sans-serif;
-    font-weight: 700;
-    line-height: 1.6;
+    color: @text-color-light;
+    font: 700 @font-size-normal e("/") 1.6 'PT Sans', sans-serif;
     margin: 0;
-    min-height: 100vh;
+    overflow: hidden;
+}
+
+.screensaver {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    overflow: auto;
+}
+
+.clock {
+    color: @color-orange;
+    font-size: 30vh;
+    line-height: 1;
+    margin: 0 @base-grid;
 }
 </style>
