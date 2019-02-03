@@ -1,36 +1,21 @@
 <template>
-    <div @click="resetTimeOut">
-        <transition name="drop">
-            <screensaver v-if="showScreensaver"></screensaver>
-        </transition>
-        <router-view v-if="!showScreensaver"></router-view>
-    </div>
+    <screensaver :timeout="2000">
+        <template slot="screensaver">
+            <clock class="clock"></clock>
+        </template>
+
+        <h1>Content</h1>
+    </screensaver>
 </template>
 
 <script>
+import Clock from "./components/Clock.vue";
 import Screensaver from "./components/Screensaver.vue";
 
 export default {
-    data: () => ({
-        screensaverTimeout: null,
-        showScreensaver: true,
-        showScreensaverAfter: 3000
-    }),
-
     components: {
+        Clock,
         Screensaver
-    },
-
-    methods: {
-        resetTimeOut() {
-            this.showScreensaver = false;
-
-            if (this.screensaverTimeout !== null) {
-                clearTimeout(this.screensaverTimeout);
-            }
-
-            this.screensaverTimeout = setTimeout(() => this.showScreensaver = true, 4000);
-        },
     }
 }
 </script>
@@ -50,7 +35,7 @@ html {
 
 body {
     .text--normal();
-    background: @tone-black linear-gradient(100deg, transparent 61.8%, @color-purple-secondary 61.8%) no-repeat;
+    background: @tone-black linear-gradient(100deg, transparent 61.8%, @color-purple-secondary 61.8%) no-repeat top left;
     color: @text-color;
     font-family: 'PT Sans', sans-serif;
     font-weight: 700;
