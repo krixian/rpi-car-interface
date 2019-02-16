@@ -16,15 +16,33 @@ export default {
         timeout: { default: 10000, type: Number }
     },
 
+    mounted() {
+        if (this.timeout <= 0) {
+            this.hide();
+        }
+    },
+
     methods: {
-        resetTimeOut() {
+        hide() {
             this.showScreensaver = false;
+            this.$emit("hide");
+        },
+
+        resetTimeOut() {
+            this.hide();
 
             if (this.screensaverTimeout !== null) {
                 clearTimeout(this.screensaverTimeout);
             }
 
-            this.screensaverTimeout = setTimeout(() => this.showScreensaver = true, this.timeout);
+            if (this.timeout > 0) {
+                this.screensaverTimeout = setTimeout(() => this.show(), this.timeout);
+            }
+        },
+
+        show() {
+            this.showScreensaver = true;
+            this.$emit("show");
         },
     }
 }
