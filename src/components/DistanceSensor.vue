@@ -1,11 +1,7 @@
 <template>
     <svg :viewBox="viewbox">
-        <line v-for="s in sensorLines" :key="s.i"
-            :stroke="s.color"
-            :x1="s.offset"
-            :y1="0"
-            :x2="s.x2"
-            :y2="s.y2" />
+        <wave-effect v-for="s in sensorLines" stroke-width="20" :stroke="s.color" :key="s.i" :length="s.distance" :transform="'translate(' + s.offset + ',' + 0 + ') rotate(' + (90 + s.angle) + ')'">
+        </wave-effect>
 
         <image
             :height="carLength"
@@ -16,11 +12,15 @@
             transform="scale(1.2) translate(0, 0)"
             xlink:href="../assets/car-images/peugeot-107-top.png" />
     </svg>
-
 </template>
 
 <script>
+import WaveEffect from "./WaveEffect.vue"
+
 export default {
+    components: { 
+        WaveEffect 
+    },
     computed: {
         viewbox() {
             const zoomFactor = .6;
@@ -58,16 +58,25 @@ export default {
             return "#999";
         }
     },
+    mounted() {
+        const interval = setInterval(() => {
+            if (this.sensors.some(s => s.distance > 280)) {
+                this.sensors.forEach(s => s.distance = s.distance - 20);
+            } else {
+                clearInterval(interval);
+            }
+        }, 200)
+    },
     data() {
         return {
             carLength: 3430,
             carWidth: 1855,
             carOffset: 150,
             sensors: [
-                { offset: -700, angle: 10, distance: 1000 },
-                { offset: -300, angle: 5, distance: 800 },
-                { offset: 300, angle: -5, distance: 400 },
-                { offset: 700, angle: -10, distance: 200 }
+                { offset: -700, angle: 10, distance: 1200 },
+                { offset: -300, angle: 0, distance: 1200 },
+                { offset: 300, angle: -0, distance: 1200 },
+                { offset: 700, angle: -10, distance: 1200 }
             ],
 
         }; 
@@ -78,15 +87,5 @@ export default {
 <style lang="less">
     body {
         background: #334 !important;
-    }
-
-    line {
-        animation: strokes 400ms linear infinite;
-        stroke-width: 300px;
-        stroke-dasharray: 20 40;
-    }
-
-    @keyframes strokes {
-        to { stroke-dashoffset: -60; }
     }
 </style>
