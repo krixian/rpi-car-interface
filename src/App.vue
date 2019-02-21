@@ -1,20 +1,23 @@
 <template>
-    <screensaver class="screensaver" :timeout="2000">
+    <screensaver class="screensaver" :timeout="0">
         <template slot="screensaver">
             <clock class="clock"></clock>
         </template>
 
-        <h1>Content</h1>
+        <DistanceSensor class="distance-sensor">
+        </DistanceSensor>
     </screensaver>
 </template>
 
 <script>
 import Clock from "./components/Clock.vue";
+import DistanceSensor from "./components/DistanceSensor.vue";
 import Screensaver from "./components/Screensaver.vue";
 
 export default {
     components: {
         Clock,
+        DistanceSensor,
         Screensaver
     }
 }
@@ -53,5 +56,11 @@ body {
     font-size: 30vh;
     line-height: 1;
     margin: 0 @base-grid;
+}
+
+.distance-sensor {
+    display: block;
+    height: 100%;
+    width: 100%;
 }
 </style>
